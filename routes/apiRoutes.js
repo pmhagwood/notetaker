@@ -6,7 +6,8 @@
 
 var db = require("../db/db.json");
 const fs = require("fs");
-
+// db.push({title:"Title One", text:"One Text"});
+// console.log(db);
 
 // ===============================================================================
 // ROUTING
@@ -20,6 +21,12 @@ module.exports = function(app) {
 
  app.post("/api/notes", function(req, res) {
   console.log(req.body);
+  db.push(req.body);
+  fs.writeFile('db/db.json', JSON.stringify(db), (error) => {
+    if(error) throw error;
+    console.log("file saved");
+  });
+  res.json(db);
 });
 
 
