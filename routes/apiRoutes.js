@@ -4,10 +4,25 @@
 // These data sources hold arrays of information on table-data, waitinglist, etc.
 // ===============================================================================
 
-var db = require("../db/db.json");
+// var db = require("../db/db.json");
 const fs = require("fs");
 // db.push({title:"Title One", text:"One Text"});
 // console.log(db);
+
+var notesData = getNotes();
+
+function getNotes() {
+  let data = fs.readFileSync('./db/db.json');
+
+  let notes = JSON.parse(data);
+
+  // Give each note an ID that matches its index (this gets run for every time the page is refreshed)
+  for (let i = 0; i < notes.length; i++) {
+      notes[i].id = '' + i;
+  }
+
+  return notes;
+}
 
 // ===============================================================================
 // ROUTING
@@ -15,18 +30,25 @@ const fs = require("fs");
 
 module.exports = function(app) {
  app.get("/api/notes", function(req, res){
-  res.json(db);
+  notesData = getNotes();
+  res.json(notesData);
  });
 
 
  app.post("/api/notes", function(req, res) {
   console.log(req.body);
-  db.push(req.body);
-  fs.writeFile('db/db.json', JSON.stringify(db), (error) => {
+  notesData.push(req.body);
+  fs.writeFile('db/db.json', JSON.stringify(notesData), (error) => {
     if(error) throw error;
     console.log("file saved");
   });
-  res.json(db);
+  res.json(notesData);
+});
+
+app.delete("api/notes/:id", function(req, res){
+  const requestID = req.params.id;
+  console.log(requestID);
+
 });
 
 
