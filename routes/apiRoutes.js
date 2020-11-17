@@ -36,18 +36,20 @@ module.exports = function(app) {
 
 
  app.post("/api/notes", function(req, res) {
-  console.log(req.body);
+  // console.log("save data: ", req.body);
+  // console.log("new obj: ", Object.assign(req.body, {"id": 1}))
   notesData.push(req.body);
   fs.writeFile('db/db.json', JSON.stringify(notesData), (error) => {
     if(error) throw error;
-    console.log("file saved");
+    console.log("file saved: ", notesData);
   });
   res.json(notesData);
 });
 
-app.delete("api/notes/:id", function(req, res){
+app.delete("/api/notes/:id", function(req, res){
+  console.log("delete this")
   const requestID = req.params.id;
-  console.log(requestID);
+  console.log("request id: ", requestID);
 
 });
 
