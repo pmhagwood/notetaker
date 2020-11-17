@@ -38,6 +38,9 @@ module.exports = function(app) {
  app.post("/api/notes", function(req, res) {
   // console.log("save data: ", req.body);
   // console.log("new obj: ", Object.assign(req.body, {"id": 1}))
+  let newId = notesData.length;
+  Object.assign(req.body, {"id": newId.toString()});
+  // console.log('new note with id ', noteId);
   notesData.push(req.body);
   fs.writeFile('db/db.json', JSON.stringify(notesData), (error) => {
     if(error) throw error;
