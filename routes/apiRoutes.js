@@ -54,6 +54,15 @@ app.delete("/api/notes/:id", function(req, res){
   const requestID = req.params.id;
   console.log("request id: ", requestID);
 
+  notesData = notesData.filter(note => {
+    return note.id !== requestID ? note : null ;
+  });
+
+  fs.writeFile('db/db.json', JSON.stringify(notesData), (error) => {
+    if(error) throw error;
+    console.log("file deleted: ", notesData);
+  });
+
 });
 
 
